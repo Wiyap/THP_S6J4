@@ -1,0 +1,40 @@
+<section class='container-fluid '>
+
+<h1>Création de compte</h1>
+
+<%= form_with(model: @users, url: users_path, method: :post, local: true) do |form| %>
+  <div class="form-row mb-3">
+    <%= form.label :Ton_prénom %>
+    <%= form.text_field :first_name, class:"form-group col-md-2" %>
+    <%= form.label :Ton_nom %>
+    <%= form.text_field :last_name, class:"form-group col-md-2" %>
+  </div>
+  <div class="form-row mb-3">
+    <%= form.label :Ta_ville %>
+    <%= form.select(:city_id, City.pluck(:name, :id), {},{:class => 'form-select-sm select-city form-group col-md-2'}) %>
+    <%= form.label :Ton_âge %>
+    <%= form.text_field :age, class:"form-group col-md-1" %>
+    <%= form.label :Ton_email %>
+    <%= form.text_field :email, class:"form-group col-md-2" %>
+  </div>
+  <div class="form-row mb-3">
+    <%= form.label :Ton_mot_de_passe %>
+    <%= form.password_field :password, class:"form-group col-md-2" %>
+    <%= form.label :Confirme_le %>
+    <%= form.password_field :password_confirmation, class:"form-group col-md-2" %>
+  </div>
+  <div class="form-row mb-3">
+    <%= form.label :Description %>
+    <%= form.text_area :description, class:"form-control", style:"width: 50em;height: 7em;"%>
+  </div>
+
+  <%= form.submit "Envoie la sauce!", class:"btn btn-outline-dark"%>  
+<% end %>
+
+<% flash.each do |type, msg| %>
+  <div>
+    <%= msg %>
+  </div>
+<% end %>
+
+</section>

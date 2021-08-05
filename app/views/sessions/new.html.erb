@@ -1,0 +1,12 @@
+<section class="container">
+  <h1>Connecte toi!</h1>
+  
+  <%= form_with(url: sessions_path, method: :post, local: true) do |form|%>
+    <%= form.label :Ton_Email %><br/>
+    <%= form.text_field :email, class:"form-row mb-3"%><br/>
+    <%= form.label :Ton_mot_de_passe %><br/>
+    <%= form.password_field :password, class:"form-row mb-3" %><br/>
+    <%= form.submit "Envoie la sauce!", class:"btn btn-outline-dark mb-3"%>
+  <% end %>
+  Pas de compte? Clique <%= link_to "ici", new_user_path %>
+</section>

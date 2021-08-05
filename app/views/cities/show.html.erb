@@ -1,0 +1,31 @@
+
+<section class="container">
+
+<h1> Les Potins de <%= @city.name %></h1>
+
+
+<ul class="wlc row">
+  <% @city.users.each do |user| %>
+    <% Gossip.where(user_id:user.id).each do |gossip| %>
+      <div class="card border-info m-4 col-3">
+        <div class="card-body">
+          <h5 class="card-title mb-2"><%= link_to "#{gossip.title}", gossip_path(gossip.id) %></h5>
+          <h5 class="card-text">"<%= "#{gossip.content[0...100]}..." %>"</h5>
+          <h5 class="card-link">de <%= link_to "#{User.find(gossip.user_id).first_name} #{User.find(gossip.user_id).last_name}",author_path(gossip.user_id) %></h5>
+          <% if logged_in?() && already_liked?(gossip.id) %>
+            <%= form_with(model: @gossips, url: likes_path, method: :post, local:true) do |form| %>
+              <%= form.hidden_field :id, value: gossip.id %>
+              <%= form.submit "Like", class:"btn btn-outline-primary btn-sm"%>
+            <% end %>
+          <% elsif logged_in?() && !already_liked?(gossip.id) %>
+            <%= form_with(model: @gossips, url: delikes_path, method: :delete, local:true) do |form| %>
+              <%= form.hidden_field :id, value: gossip.id %>
+              <%= form.submit "Like", class:"btn btn-primary btn-sm"%>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</ul>
+</section>

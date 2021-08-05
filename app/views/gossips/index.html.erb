@@ -1,0 +1,56 @@
+<header class="header" >
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="site-heading text-center">
+        <br/>
+         <h1>Bienvenue sur THE GOSSIP PROJECT</h1>
+          <span class="subheading medium">Ici tu vas tout nous dire.<br/>Ne t'inquiètes pas on ne le répètera à personne...<br/>Ou presque  🤭 </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="container">
+<% if !logged_in?() %>
+  <h3>Pour écrire un nouveau gossip <%= link_to "connecte toi", new_session_path%> !</h3>
+<% end %>
+
+<% if logged_in?() %>
+  <h3>Pour écrire un nouveau gossip <%= link_to "clique ici", new_gossip_path%> !</h3>
+<% end %>
+<h3> Voici la liste des gossips:<h3>
+<ul class="wlc row">
+  <% @all_gossip.each do |gossip| %>
+    <div class="card border-info m-4 col-3">
+      <div class="card-body">
+        <h5 class="card-title mb-2"><%= link_to "#{gossip.title}", gossip_path(gossip.id) %></h5>
+        <p class="card-text">"<%= "#{gossip.content[0...100]}..." %>"</p>
+        <p class="card-link">de 
+          <%= link_to "#{User.find(gossip.user_id).first_name} #{User.find(gossip.user_id).last_name}", author_path(gossip.user_id) %> 
+        </p>
+        <p class="card-footer">
+          <% if logged_in?() && current_user.id == gossip.user_id %>
+            <%= link_to "Edit", edit_gossip_path(gossip.id),class:"btn btn-outline-primary btn-lg"%>
+            <%= link_to "Delete", gossip_path(gossip.id), method: :delete, class:"btn btn-outline-danger btn-lg"%>
+          <% end %>
+
+          <% if logged_in?() && already_liked?(gossip.id) %>
+            <%= form_with(model: @gossips, url: likes_path, method: :post, local:true) do |form| %>
+              <%= form.hidden_field :id, value: gossip.id %>
+              <%= form.submit "Like", class:"btn btn-outline-primary btn-sm"%>
+            <% end %>
+          <% elsif logged_in?() && !already_liked?(gossip.id) %>
+            <%= form_with(model: @gossips, url: delikes_path, method: :delete, local:true) do |form| %>
+              <%= form.hidden_field :id, value: gossip.id %>
+              <%= form.submit "Like", class:"btn btn-primary btn-sm"%>
+            <% end %>
+          <% end %>
+        </p>
+        <p> <%= Comment.where(gossip_id: gossip.id).count%> commentaire(s)</p>
+      </div>
+    </div>
+  <% end %>
+</ul>
+</section>

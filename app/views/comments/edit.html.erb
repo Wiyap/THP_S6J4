@@ -1,0 +1,19 @@
+<section class="container">
+
+<h3>Un truc te plait pas?</h3>
+
+<%= form_with(model: @comments, url: comment_path(params[:id]), method: :patch, local: true) do |form|%>
+
+    <%= form.label :Change_le_contenu %> :
+    <%= form.text_area :content, value: @comment.content, class:"form-control", style:"width: 50em;height: 7em;" %><br/><br/>
+
+    <%= form.submit "Alors, heureux?", class:"btn btn-outline-dark"%>
+<% end %>
+
+<% if @comment.nil? == false && @comment.errors.any? %>
+  <p>Nous n'avons pas réussi à éditer le potin pour la (ou les) raison(s) suivante(s) :</p>
+    <% @gcomment.errors.full_messages.each do |message| %>
+      <p><%= message %></p>
+    <% end %>
+<% end %>
+</section>

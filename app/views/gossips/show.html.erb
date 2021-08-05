@@ -1,0 +1,56 @@
+<section class="container">
+<h1>Voici la page du gossip "<%= @gossip.title%>"</h1>
+  <h3 class="ts">Contenu:</h3>
+    <div class="big">
+      <p class = "gs"><%= @gossip.content %></p>
+      <p class="right gs">
+        Créer le <%= @gossip.created_at.to_s(:db) %> 
+        par <%= link_to "#{@gossip.user.first_name} #{@gossip.user.last_name}", author_path(@gossip.user_id)%> 
+        à <%= link_to "#{@gossip.user.city.name}", city_path(@gossip.user.city_id) %>
+      </p>
+    </div>
+
+    <% if logged_in?() && already_liked?(params[:id] ) %>
+      <%= form_with(model: @gossips, url: likes_path, method: :post, local:true) do |form| %>
+        <%= form.hidden_field :id, value: params[:id] %>
+        <%= form.submit "Like", class:"btn btn-outline-primary btn-sm"%>
+      <% end %>
+    <% elsif logged_in?() && !already_liked?(params[:id] ) %>
+      <%= form_with(model: @gossips, url: delikes_path, method: :delete, local:true) do |form| %>
+        <%= form.hidden_field :id, value: params[:id]%>
+        <%= form.submit "Like", class:"btn btn-primary btn-sm"%>
+      <% end %>
+    <% end %>
+
+    <p>
+    <% if logged_in?() && current_user.id == @gossip.user_id %>
+      <%= link_to "Edit", edit_gossip_path(@gossip.id),class:"btn btn-outline-primary btn-lg"%>
+      <%= link_to "Delete", gossip_path(@gossip.id), method: :delete, class:"btn btn-outline-danger btn-lg"%>
+    <% end %>
+    </p>
+  
+  <h3> Espace commentaire:</h3>
+    <% @comments.each do |comment|%>
+      <%= comment.content%><br/><br/>
+      <%= "#{User.find(comment.user_id).first_name} #{User.find(comment.user_id).last_name}"%>
+      <% if logged_in?() && current_user.id == comment.user_id %>
+        <%= link_to "Edit", edit_comment_path(comment.id), class:"btn btn-outline-primary btn-lg btn-sm"%>
+        <%= link_to "Delete", comment_path(comment.id), method: :delete, class:"btn btn-outline-danger btn-lg btn-sm"%>
+      <% end %>
+      <br/><br/>
+    <% end %>
+
+  <% if logged_in?() %>
+    <%= form_with(model: @comments_new, local: true) do |form|%>
+      <%= form.label :Commentaire %> :
+      <%= form.text_area :content, class:"form-control", style:"width: 50em;height: 7em;"%>
+      <%= form.hidden_field :id, value: params[:id] %>
+      <br/>
+      <%= form.submit "Envoie la sauce!", class:"btn btn-outline-dark"%>
+      <br/><br/><br/><br/>
+    <% end %>
+  <% else %>
+    <h3> Pour écrire des commentaires <%= link_to "connecte toi", new_session_path%> ! </h3>
+  <% end %>
+  
+</section>

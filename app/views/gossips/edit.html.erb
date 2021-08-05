@@ -1,0 +1,23 @@
+<section class="container">
+
+<h3>Un truc te plait pas?</h3>
+
+<%= form_with(model: @gossips, url: gossip_path(params[:id]), method: :patch, local: true) do |form|%>
+
+    <%= form.label :Change_le_titre %> :
+    <%= form.text_field :title, value: @gossip.title, class:"form-control", style:"width:20em;" %><br/>
+
+    <%= form.label :Change_le_contenu%> :
+    <%= form.text_area :content, value: @gossip.content, class:"form-control", style:"width: 50em;height: 7em;"%><br/><br/>
+
+    <p><%= form.label :Entre_ton_prénom %> :<%= form.text_field :first_name, class:"form-control", style:"width:20em;" %><br/>
+    <%= form.submit "Alors, heureux?", class:"btn btn-outline-dark"%>
+<% end %>
+
+<% if @gossip.nil? == false && @gossip.errors.any? %>
+  <p>Nous n'avons pas réussi à éditer le potin pour la (ou les) raison(s) suivante(s) :</p>
+    <% @gossip.errors.full_messages.each do |message| %>
+      <p><%= message %></p>
+    <% end %>
+<% end %>
+</section>

@@ -1,0 +1,10 @@
+<section class="container">
+<h1> Regarde en dessous. T'as vu tout le monde qu'il y a? WOOOOW!</h1>
+
+<h3> La liste de nos fameux auteurs de potins:<h3>
+<ul class="wlc">
+  <% @all_user.each do |user| %>
+    <li><%= "#{user.first_name} #{user.last_name}"%></li>
+  <% end %>
+</ul>
+</section>

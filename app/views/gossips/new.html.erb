@@ -1,0 +1,21 @@
+<section class="container">
+
+<h3>Alors... Dis-moi tout 👂🏼</h3>
+
+<%= form_with( model: @gossips, local: true) do |form|%>
+  <%= form.label :Titre %> :
+  <%= form.text_field :title, class:"form-control", style:"width:20em;" %><br/>
+
+  <%= form.label :Contenu %> :
+  <%= form.text_area :content, class:"form-control", style:"width: 50em;height: 7em;", placeholder:"Contenu"%><br/><br/>
+  
+  <%= form.submit "Envoie la sauce!", class:"btn btn-outline-dark mb-3"%>
+<% end%>
+
+<% if @gossip.nil? == false && @gossip.errors.any? %>
+  <p>Nous n'avons pas réussi à créer le potin pour la (ou les) raison(s) suivante(s) :</p>
+    <% @gossip.errors.full_messages.each do |message| %>
+      <p><%= message %></p>
+    <% end %>
+<% end %>
+</section>
