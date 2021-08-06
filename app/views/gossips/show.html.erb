@@ -21,6 +21,8 @@
         <%= form.submit "Like", class:"btn btn-primary btn-sm"%>
       <% end %>
     <% end %>
+    <br/>
+    <%= like_count(params[:id]) %> like(s)
 
     <p>
     <% if logged_in?() && current_user.id == @gossip.user_id %>

@@ -31,11 +31,12 @@
           <%= link_to "#{User.find(gossip.user_id).first_name} #{User.find(gossip.user_id).last_name}", author_path(gossip.user_id) %> 
         </p>
         <p class="card-footer">
+         
           <% if logged_in?() && current_user.id == gossip.user_id %>
             <%= link_to "Edit", edit_gossip_path(gossip.id),class:"btn btn-outline-primary btn-lg"%>
             <%= link_to "Delete", gossip_path(gossip.id), method: :delete, class:"btn btn-outline-danger btn-lg"%>
           <% end %>
-
+         
           <% if logged_in?() && already_liked?(gossip.id) %>
             <%= form_with(model: @gossips, url: likes_path, method: :post, local:true) do |form| %>
               <%= form.hidden_field :id, value: gossip.id %>
@@ -47,6 +48,8 @@
               <%= form.submit "Like", class:"btn btn-primary btn-sm"%>
             <% end %>
           <% end %>
+          <br/>
+          <%= like_count(gossip.id) %> like(s)
         </p>
         <p> <%= Comment.where(gossip_id: gossip.id).count%> commentaire(s)</p>
       </div>

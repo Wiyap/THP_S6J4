@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   add_flash_types :info, :danger, :warning, :success
+  
   def current_user
     User.find_by(id: session[:user_id])
   end
@@ -10,9 +11,5 @@ class ApplicationController < ActionController::Base
 
   def already_liked?
     !Like.where(gossip_id:params[:id],user_id:session[:user_id]).nil?
-  end
-
-  def like_id
-    Like.where(gossip_id: params[:id], user_id: session[:id]).first.id
   end
 end

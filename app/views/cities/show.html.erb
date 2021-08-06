@@ -3,7 +3,6 @@
 
 <h1> Les Potins de <%= @city.name %></h1>
 
-
 <ul class="wlc row">
   <% @city.users.each do |user| %>
     <% Gossip.where(user_id:user.id).each do |gossip| %>
@@ -23,6 +22,8 @@
               <%= form.submit "Like", class:"btn btn-primary btn-sm"%>
             <% end %>
           <% end %>
+          <br/>
+          <%= like_count(gossip.id) %> like(s)
         </div>
       </div>
     <% end %>
