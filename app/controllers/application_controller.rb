@@ -12,4 +12,16 @@ class ApplicationController < ActionController::Base
   def already_liked?
     !Like.where(gossip_id:params[:id],user_id:session[:user_id]).nil?
   end
+
+  def log_in(user)
+    session[:user_id] = user.id
+  end
+
+
+  def remember(user)
+    remember_token = SecureRandom.urlsafe_base64  
+    user.remember(remember_token)
+    cookies.permanent[:user_id] = user.id
+    cookies.permanent[:remember_token] = remember_token
+  end
 end

@@ -6,7 +6,8 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
+      log_in(user)
+      remember(user)
       flash[:success] = 'Youuhouuuu'
       redirect_to gossips_path
     else
@@ -19,4 +20,4 @@ class SessionsController < ApplicationController
     session.delete(:user_id)
     redirect_to gossips_path
   end
-end
+
